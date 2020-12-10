@@ -253,15 +253,16 @@ if ($proceed == false) {
     $row = $form->addRow();
         $row->addLabel('countryOfBirth', __('Country of Birth'));
         $row->addSelectCountry('countryOfBirth')->required();
-
-    $row = $form->addRow();
-        $row->addLabel('citizenship1', __('Citizenship'));
-        $nationalityList = getSettingByScope($connection2, 'User Admin', 'nationality');
-        if (!empty($nationalityList)) {
-            $row->addSelect('citizenship1')->required()->fromString($nationalityList)->placeholder(__('Please select...'));
-        } else {
-            $row->addSelectCountry('citizenship1')->required();
-        }
+//
+  //  $row = $form->addRow();
+    //    $row->addLabel('citizenship1', __('Citizenship'));
+    //    $nationalityList = getSettingByScope($connection2, 'User Admin', 'nationality');
+    //    if (!empty($nationalityList)) {
+    //        $row->addSelect('citizenship1')->required()->fromString($nationalityList)->placeholder(__('Please select...'));
+    //    } else {
+    //        $row->addSelectCountry('citizenship1')->required();
+      //  }
+      $form->addHiddenValue('citizenship1', 'N/A');
 
     $countryName = (isset($_SESSION[$guid]['country']))? __($_SESSION[$guid]['country']).' ' : '';
     $row = $form->addRow();
