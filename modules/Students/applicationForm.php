@@ -215,9 +215,9 @@ if ($proceed == false) {
         $row->addLabel('officialName', __('Official Name'))->description(__('Full name as shown in ID documents.'));
         $row->addTextField('officialName')->required()->maxLength(150)->setTitle(__('Please enter full name as shown in ID documents'));
 
-    $row = $form->addRow();
-        $row->addLabel('nameInCharacters', __('Name In Characters'))->description(__('Chinese or other character-based name.'));
-        $row->addTextField('nameInCharacters')->maxLength(60);
+//    $row = $form->addRow();
+//        $row->addLabel('nameInCharacters', __('Name In Characters'))->description(__('Chinese or other character-based name.'));
+//        $row->addTextField('nameInCharacters')->maxLength(60);
 
     $row = $form->addRow();
         $row->addLabel('gender', __('Gender'));
@@ -230,18 +230,20 @@ if ($proceed == false) {
     // STUDENT BACKGROUND
     $form->addRow()->addSubheading(__('Student Background'));
 
-    $row = $form->addRow();
-        $row->addLabel('languageHomePrimary', __('Home Language - Primary'))->description(__('The primary language used in the student\'s home.'));
-        $row->addSelectLanguage('languageHomePrimary')->required();
+//    $row = $form->addRow();
+//        $row->addLabel('languageHomePrimary', __('Home Language - Primary'))->description(__('The primary language used in the student\'s home.'));
+//        $row->addSelectLanguage('languageHomePrimary')->required();
+        $row = $form->addHiddenValue('languageHomePrimary', 'N/A');
 
-    $row = $form->addRow();
-        $row->addLabel('languageHomeSecondary', __('Home Language - Secondary'));
-        $row->addSelectLanguage('languageHomeSecondary')->placeholder('');
+//    $row = $form->addRow();
+//        $row->addLabel('languageHomeSecondary', __('Home Language - Secondary'));
+//        $row->addSelectLanguage('languageHomeSecondary')->placeholder('')
+
 
     $row = $form->addRow();
         $row->addLabel('languageFirst', __('First Language'))->description(__('Student\'s native/first/mother language.'));
         $row->addSelectLanguage('languageFirst')->required();
-
+    $row = $form->addHiddenValue('languageFirst', 'N/A');
     $row = $form->addRow();
         $row->addLabel('languageSecond', __('Second Language'));
         $row->addSelectLanguage('languageSecond')->placeholder('');

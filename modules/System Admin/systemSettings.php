@@ -176,7 +176,8 @@ if (isActionAccessible($guid, $connection2, '/modules/System Admin/systemSetting
 
     $firstDayOfTheWeekOptions = array(
         'Monday' => __("Monday"),
-        'Sunday' => __("Sunday")
+        'Sunday' => __("Sunday"),
+        'Saturday' => __("Saturday")
     );
     
     $setting = getSettingByScope($connection2, 'System', 'firstDayOfTheWeek', true);
