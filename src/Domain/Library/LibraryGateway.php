@@ -193,6 +193,14 @@ class LibraryGateway extends QueryableGateway
                     ->where('gibbonSpace.name LIKE :location')
                     ->bindValue('location', $location);
             },
+            'agecheck' => function ($query, $readerAge) {
+                return $query
+                    ->where('gibbonLibraryItem.fields->\'$."Reader Age (Youngest)"\' != "" 
+                            AND gibbonLibraryItem.fields->\'$."Reader Age (Oldest)"\' != "" 
+                            AND gibbonLibraryItem.fields->\'$."Reader Age (Youngest)"\'+0 <= :readerAge 
+                            AND gibbonLibraryItem.fields->\'$."Reader Age (Oldest)"\'+0 >= :readerAge')
+                    ->bindValue('readerAge', $readerAge);
+            },
             'everything' => function ($query, $needle) {
                 $globalSearch = "(";
                 foreach ($query->getCols() as $col) {
@@ -374,6 +382,7 @@ class LibraryGateway extends QueryableGateway
             SET gibbonLibraryItem.fields=parent.fields, 
                 gibbonLibraryItem.name=parent.name,
                 gibbonLibraryItem.producer=parent.producer,
+                gibbonLibraryItem.vendor=parent.vendor,
                 gibbonLibraryItem.imageType=parent.imageType,
                 gibbonLibraryItem.imageLocation=parent.imageLocation,
                 gibbonLibraryItem.gibbonSpaceID=parent.gibbonSpaceID,
@@ -395,6 +404,7 @@ class LibraryGateway extends QueryableGateway
             SET gibbonLibraryItem.fields=parent.fields, 
                 gibbonLibraryItem.name=parent.name,
                 gibbonLibraryItem.producer=parent.producer,                
+                gibbonLibraryItem.vendor=parent.vendor,                
                 gibbonLibraryItem.imageType=parent.imageType,
                 gibbonLibraryItem.imageLocation=parent.imageLocation,
                 gibbonLibraryItem.gibbonSpaceID=parent.gibbonSpaceID,
@@ -466,4 +476,19 @@ class LibraryGateway extends QueryableGateway
         return $this->runQuery($query, $criteria);
     }
 
+    public function selectDistinctVendorList()
+    {
+        $data = [];
+        $sql = "SELECT DISTINCT vendor FROM gibbonLibraryItem ORDER BY vendor";
+
+        return $this->db()->select($sql, $data);
+    }
+
+    public function selectDistinctLocationDetails()
+    {
+        $data = [];
+        $sql = "SELECT DISTINCT locationDetail FROM gibbonLibraryItem ORDER BY locationDetail";
+
+        return $this->db()->select($sql, $data);
+    }
 }

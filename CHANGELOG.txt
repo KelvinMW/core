@@ -27,7 +27,9 @@ v27.0.00
         Added an auto-save system when creating new lesson plans
 
     Changes With Important Notices
+        System: updated Google OAuth Client SSO to handle granular permissions (required by Google for June 17, 2024)
         System: updated JQuery(2.2.4 -> 3.7.1) and JQuery Migrate(1.4.1 -> 3.4.0) files to latest versions
+        System: in you use Gmail SMTP relay, be sure to update your settings to use an App Password
 
     Tweaks & Additions
         System: automatically hyperlink any urls included in Custom Field descriptions
@@ -39,15 +41,22 @@ v27.0.00
         Activities: added notification events for activity enrolment changes
         Activities: added a Left status to activity enrolment, to retain a history of previous enrolments
         Activities: added bulk actions to the activity enrolment page
+        Admissions: added a notification event for student form group changes
         Behaviour: added notifications for positive behaviour records
         Behaviour: added the ability to view other students involved in multiple behaviour records
         Behaviour: updated the view so that followups are displayed as conversational logs and stored in a separate table
         Behaviour: added the ability to able to link a behaviour record to some other existing behaviour record
         Behaviour: added positive behaviour records to the Daily Behaviour Summary CLI script
+        Behaviour: added a my_permission so that teachers are restricted to only view behaviours created by them
+        Finance: added a fees list and notes column to the Export option in Manage Invoices
         Library: added ui changes to Library module browsing through library shelves and improved search page
         Library: added automatic shelf generation by search term, automatic shelf updates, and auto-shuffling
+        Library: added autocomplete to the Vendor and Location Detail fields in Add/Edit under Manage Catalogue
+        Library: updated child records to use the same Vendor field as parent records in Manage Catalogue
+        Markbook: removed non-numeric entries from cumulative totals
         Messenger: added search form and school year navigator to Manage Groups page for quicker group browsing
         Messenger: added an index to the Message Target table to speed up the recipients query
+        Reports: updated report writing to also show left class enrolments with the Show Left Students tool
         Reports: added uploadable Image as a field type in Manage Criteria Types
         Reports: added a check for the correct .twig.html extension in Manage Assets
         School Admin: added the ability to toggle facilities between active and inactive
@@ -56,8 +65,10 @@ v27.0.00
         Staff: added a notification to inform staff of first aid qualification that are expiring soon
         Students: added an Upcoming Students option to the Students by House report
         Students: added year group next to form group name in student history details
+        Timetable: added activities to the timetable in View Timetable by Facility 
         Timetable: added basic information table to the View Timetable by Facility report
         Timetable: added timetable iCal Export buttons to staff and student profiles
+        Timetable: enabled facilities for Off Timetable classes to be re-booked in Manage Facility Bookings
         User Admin: added an option to disable the display of privacy options, so they can be managed internally
         User Admin: increased the field length for Departure Reason to 100 characters
         System Admin: added an importer for Behaviour Records
@@ -86,8 +97,10 @@ v27.0.00
         Messenger: fixed blank read receipt text when editing a draft message
         Messenger: fixed visual bug when messages are wider than the message wall
         Reports: fixed missing sequenceNumber in duplicated Reporting Cycles
+        Reports: fixed students from non-reporting-cycle year groups displaying in Write Reports
         Staff: fixed My Coverage page showing coverage from past years
         Students: fixed the view all option in the Students by Form Group report
+        System Admin: fixed category and module for Student Enrolment importer
 
     Deprecations
         System: replaced session call through $gibbon->session to $session. "$gibbon->session" is now deprecated
