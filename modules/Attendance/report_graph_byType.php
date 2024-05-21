@@ -203,7 +203,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Attendance/report_graph_by
                     ],
                 ])
                 ->setLabels(array_map(function ($date) {
-                    return Format::dateReadable($date, '%b %d');
+                    return Format::dateReadable($date, Format::MEDIUM_NO_YEAR);
                 }, $days));
 
             foreach ($data as $typeName => $dates) {

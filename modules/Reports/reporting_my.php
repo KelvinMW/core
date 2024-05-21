@@ -142,8 +142,8 @@ if (isActionAccessible($guid, $connection2, '/modules/Reports/reporting_my.php')
             $table = DataTable::create('reportsMy');
             $table->setTitle($scope['name']);
             $table->setDescription(__('You have access from {dateStart} to {dateEnd}.', [
-                'dateStart' => Format::dateReadable($scope['dateStart'], '%b %e'),
-                'dateEnd' => Format::dateReadable($scope['dateEnd'], '%b %e'),
+                'dateStart' => Format::dateReadable($scope['dateStart'], Format::MEDIUM_NO_YEAR),
+                'dateEnd' => Format::dateReadable($scope['dateEnd'], Format::MEDIUM_NO_YEAR),
             ]));
 
             $table->addColumn('criteriaName', __('Name'))->width('35%');

@@ -217,10 +217,15 @@ if (isActionAccessible($guid, $connection2, '/modules/Activities/report_attendan
                             echo "<td style='vertical-align:top; width: 50px;  white-space: nowrap;'>";
                         }
 
-                printf("<span title='%s'>%s</span><br/>&nbsp;<br/>", $sessionAttendanceData[$sessionDate]['info'], Format::dateReadable($sessionDate, '%a <br /> %b %e'));
+                printf("<span title='%s'>%s <br/> %s</span><br/>&nbsp;<br/>",
+                    $sessionAttendanceData[$sessionDate]['info'],
+                    Format::dayOfWeekName($sessionDate, true),
+                    Format::dateReadable($sessionDate, Format::MEDIUM_NO_YEAR)
+                );
             } else {
                 echo "<td style='color: #bbb; vertical-align:top; width: 50px; white-space: nowrap;'>";
-                echo Format::dateReadable($sessionDate, '%a <br /> %b %e').'<br/>&nbsp;<br/>';
+                echo Format::dayOfWeekName($sessionDate).' <br/> '.
+                    Format::dateReadable($sessionDate, Format::MEDIUM_NO_YEAR).'<br/>&nbsp;<br/>';
             }
             echo '</td>';
         }

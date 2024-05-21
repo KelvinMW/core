@@ -135,11 +135,18 @@ class MessageForm extends Form
             }
 
             $row = $form->addRow()->addClass('messageWall');
-                $row->addLabel('date1', __('Publication Dates'))->description(__('Select up to three individual dates.'));
-                $col = $row->addColumn('date1')->addClass('stacked');
-                $col->addDate('date1')->setValue(Format::date($values['messageWall_date1'] ?? date('Y-m-d')))->required();
-                $col->addDate('date2')->setValue(Format::date($values['messageWall_date2'] ?? ''));
-                $col->addDate('date3')->setValue(Format::date($values['messageWall_date3'] ?? ''));
+                $row->addLabel('datePublished', __('Publication Dates'));
+                $col = $row->addColumn('dateStart')->addClass('stacked');
+                $col->addLabel('dateStart', __('Start Date'));
+                $col->addDate('dateStart')
+                    ->chainedTo('dateEnd')
+                    ->setValue(Format::date($values['messageWall_dateStart'] ?? ''))
+                    ->required();
+                $col->addLabel('dateEnd', __('End Date'));
+                $col->addDate('dateEnd')
+                    ->chainedFrom('dateStart')
+                    ->setValue(Format::date($values['messageWall_dateEnd'] ?? ''))
+                    ->required();
         }
 
         // Delivery by SMS
@@ -235,6 +242,10 @@ class MessageForm extends Form
                 $row = $form->addRow()->addClass('emailReceipt');
                     $row->addLabel('emailReceiptText', __('Link Text'))->description(__('Confirmation link text to display to recipient.'));
                     $row->addTextArea('emailReceiptText')->setRows(4)->required()->setValue($values['emailReceiptText'])->readonly($sent);
+
+                $row = $form->addRow()->addClass('emailReceipt');
+                    $row->addLabel('enableSharingLink', __('Shareable Send Report'))->description(__('When enabled, you can share the Send Report for this message with other users.'));
+                    $row->addYesNoRadio('enableSharingLink')->required()->checked($values['enableSharingLink'] ?? 'N');
             }
         }
 

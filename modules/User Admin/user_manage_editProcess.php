@@ -30,7 +30,7 @@ use Gibbon\Domain\User\RoleGateway;
 
 require_once '../../gibbon.php';
 
-$_POST = $container->get(Validator::class)->sanitize($_POST);
+$_POST = $container->get(Validator::class)->sanitize($_POST, ['website' => 'URL']);
 
 //Module includes
 include './moduleFunctions.php';
@@ -91,8 +91,6 @@ if (isActionAccessible($guid, $connection2, '/modules/User Admin/user_manage_edi
                     $other = true;
                 }
             }
-
-            $attachment1 = $_POST['attachment1'] ?? '';
 
             //Proceed!
             $title = $_POST['title'] ?? '';
@@ -352,6 +350,9 @@ if (isActionAccessible($guid, $connection2, '/modules/User Admin/user_manage_edi
                                 }
                             }
                         }
+                    } else {
+                        // Remove the attachment if it has been deleted, otherwise retain the original value
+                        $attachment1 = empty($_POST['attachment1']) ? '' : $row['image_240'];
                     }
 
                     // CUSTOM FIELDS

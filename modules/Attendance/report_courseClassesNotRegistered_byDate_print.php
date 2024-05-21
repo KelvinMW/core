@@ -164,8 +164,8 @@ if (isActionAccessible($guid, $connection2, '/modules/Attendance/report_courseCl
                             }
 
                             echo "<td class='$class' style='padding: 12px !important;'>";
-                            echo Format::dateReadable($lastNSchoolDays[$i], '%d').'<br/>';
-                            echo "<span>".Format::dateReadable($lastNSchoolDays[$i], '%b').'</span>';
+                            echo Format::date($lastNSchoolDays[$i], 'd').'<br/>';
+                            echo "<span>".Format::monthName($lastNSchoolDays[$i], true).'</span>';
                             echo '</td>';
 
                             // Wrap to a new line every 10 dates

@@ -64,7 +64,7 @@ class AbsenceDates
         $connection2 = $this->db->getConnection();
 
         $absence = $this->staffAbsenceGateway->getAbsenceDetailsByID($gibbonStaffAbsenceID);
-        $dates = $includeCoverage 
+        $dates = $includeCoverage
             ? $this->staffAbsenceDateGateway->selectDatesByAbsenceWithCoverage($gibbonStaffAbsenceID)->toDataSet()
             : $this->staffAbsenceDateGateway->selectDatesByAbsence($gibbonStaffAbsenceID)->toDataSet();
 
