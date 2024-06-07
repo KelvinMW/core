@@ -19,6 +19,23 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 CHANGELOG
 =========
 
+v28.0.00
+--------
+
+    Headlines
+
+    Changes With Important Notices
+
+    Security
+
+    Tweaks & Additions
+        System: added Putonghua as a language option in dropdown menus
+        Attendance: added an index to the attendance log to help speed up attendance pages
+        Markbook: updated markbook columns to grey out students who joined after the Go Live date
+        Reports: added a Progress by Department report for viewing class criteria progress
+
+    Bug Fixes
+    
 v27.0.01
 --------
 
