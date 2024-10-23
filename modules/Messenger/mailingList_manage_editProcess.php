@@ -19,53 +19,49 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-use Gibbon\Http\Url;
 use Gibbon\Data\Validator;
-use Gibbon\Domain\Admissions\AdmissionsAccountGateway;
+use Gibbon\Services\Format;
+use Gibbon\Domain\Messenger\MailingListGateway;
 
 require_once '../../gibbon.php';
 
 $_POST = $container->get(Validator::class)->sanitize($_POST);
 
-$gibbonAdmissionsAccountID = $_POST['gibbonAdmissionsAccountID'] ?? '';
-$search = $_POST['search'] ?? '';
+$gibbonMessengerMailingListID = $_POST['gibbonMessengerMailingListID'] ?? '';
 
-$URL = Url::fromModuleRoute('Admissions', 'admissions_manage_edit')->withQueryParams(['gibbonAdmissionsAccountID' => $gibbonAdmissionsAccountID, 'search' => $search]);
+$URL = $session->get('absoluteURL').'/index.php?q=/modules/Messenger/mailingList_manage_edit.php&gibbonMessengerMailingListID='.$gibbonMessengerMailingListID;
 
-if (isActionAccessible($guid, $connection2, '/modules/Admissions/admissions_manage_edit.php') == false) {
-    header("Location: {$URL->withReturn('error0')}");
+if (isActionAccessible($guid, $connection2, '/modules/Messenger/mailingList_manage_edit.php') == false) {
+    $URL .= '&return=error0';
+    header("Location: {$URL}");
     exit;
 } else {
+
     // Proceed!
-    $admissionsAccountGateway = $container->get(AdmissionsAccountGateway::class);
+    $mailingListGateway = $container->get(MailingListGateway::class);
 
     $data = [
-        'email' => filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL),
+        'surname'                   => $_POST['surname'] ?? '',
+        'preferredName'             => $_POST['preferredName'] ?? '',
+        'email'                     => filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL),
     ];
 
     // Validate the required values are present
-    if (empty($data['email']) || empty($gibbonAdmissionsAccountID)) {
+    if (empty($data['surname']) || empty($data['preferredName']) || empty($data['email'])) {
         $URL .= '&return=error1';
         header("Location: {$URL}");
         exit;
     }
 
-    // Validate the database relationships exist
-    if (!$admissionsAccountGateway->exists($gibbonAdmissionsAccountID)) {
-        $URL .= '&return=error2';
-        header("Location: {$URL}");
-        exit;
-    }
-
     // Validate that this record is unique
-    if (!$admissionsAccountGateway->unique($data, ['email'], $gibbonAdmissionsAccountID)) {
+    if (!$mailingListGateway->unique($data, ['email'], $gibbonMessengerMailingListID)) {
         $URL .= '&return=error7';
         header("Location: {$URL}");
         exit;
     }
 
     // Update the record
-    $updated = $admissionsAccountGateway->update($gibbonAdmissionsAccountID, $data);
+    $updated = $mailingListGateway->update($gibbonMessengerMailingListID, $data);
 
     $URL .= !$updated
         ? "&return=error2"
