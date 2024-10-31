@@ -23,6 +23,8 @@ namespace Gibbon\Forms\Input;
 
 use DateTime;
 use Gibbon\Services\Format;
+use Gibbon\View\Component;
+use Gibbon\Forms\Traits\ButtonGroupTrait;
 
 /**
  * Date
@@ -32,6 +34,8 @@ use Gibbon\Services\Format;
  */
 class Date extends TextField
 {
+    use ButtonGroupTrait;
+    
     protected $min;
     protected $max;
     protected $from;
@@ -64,6 +68,10 @@ class Date extends TextField
             $value = Format::dateConvert($value);
         }
 
+        if (strlen($value) == 19) {
+            $value = substr($value, 0, 10);
+        }
+
         $this->setAttribute('value', $value);
         return $this;
     }
@@ -78,18 +86,18 @@ class Date extends TextField
         return $this->setValue($value);
     }
 
-    /**
-     * Set if the input is required.
-     * @param  bool  $required
-     * @return $this
-     */
-    public function setRequired($required)
-    {
-        if ($required) {
-            $this->setAttribute('required', 'required');
-        }
-        return parent::setRequired($required);
-    }
+    // /**
+    //  * Set if the input is required.
+    //  * @param  bool  $required
+    //  * @return $this
+    //  */
+    // public function setRequired($required = true)
+    // {
+    //     // if ($required) {
+    //     //     $this->setAttribute('required', 'required');
+    //     // }
+    //     return parent::setRequired($required);
+    // }
 
     /**
      * Adds date format to the label description (if not already present)
@@ -97,12 +105,6 @@ class Date extends TextField
      */
     public function getLabelContext($label)
     {
-        global $session;
-
-        if (stristr($label->getDescription(), 'Format') === false) {
-            return __('Format').': '.$session->get('i18n')['dateFormat'];
-        }
-
         return false;
     }
 
@@ -163,10 +165,9 @@ class Date extends TextField
     protected function getElement()
     {
         $this->setAttribute('autocomplete', 'off');
-        $this->addClass('border h-10 font-sans');
 
-        $output = '<input type="date" '.$this->getAttributeString().' maxlength="10">';
-
-        return $output;
+        return Component::render(Date::class, $this->getAttributeArray() + [
+            'groupClass' => $this->getGroupClass(),
+        ]);
     }
 }

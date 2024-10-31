@@ -28,8 +28,8 @@ use Gibbon\Domain\QueryableGateway;
 /**
  * MailingList Gateway
  *
- * @version v16
- * @since   v16
+ * @version v28
+ * @since   v28
  */
 class MailingListGateway extends QueryableGateway
 {
@@ -51,7 +51,7 @@ class MailingListGateway extends QueryableGateway
             ->newQuery()
             ->from($this->getTableName())
             ->cols([
-                'gibbonMessengerMailingList.gibbonMessengerMailingListID', 'surname', 'preferredName', 'email'
+                'gibbonMessengerMailingList.gibbonMessengerMailingListID', 'name', 'active'
             ]);
     
         return $this->runQuery($query, $criteria);

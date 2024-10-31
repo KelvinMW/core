@@ -570,8 +570,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                     ->addParam('gibbonSchoolYearID', $session->get('gibbonSchoolYearID'))
                                     ->addParam('type', $role)
                                     ->addParam('allUsers', $allStudents)
-                                    ->displayLabel()
-                                    ->append(' | ');
+                                    ->displayLabel();
                                 }
                             }
 
@@ -592,8 +591,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                     ->setURL('/modules/Timetable/tt_manage_subscription.php')
                                     ->addParam('gibbonPersonID', $gibbonPersonID)
                                     ->setIcon('download')
-                                    ->displayLabel()
-                                    ->prepend(' | ');
+                                    ->displayLabel();
                             }
 
                             echo $table->render([['' => '']]);
@@ -1401,7 +1399,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
 
                                     $form = Form::create('filter', $session->get('absoluteURL').'/index.php', 'get');
                                     $form->setTitle(__('Filter'));
-                                    $form->setClass('noIntBorder fullWidth');
+                                    $form->setClass('noIntBorder w-full');
 
                                     $form->addHiddenValue('q', '/modules/'.$session->get('module').'/student_view_details.php');
                                     $form->addHiddenValue('gibbonPersonID', $gibbonPersonID);
@@ -1594,7 +1592,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                 echo '</p>';
 
                                 $form = Form::create('filter', $session->get('absoluteURL').'/index.php', 'get');
-                                $form->setClass('noIntBorder fullWidth');
+                                $form->setClass('noIntBorder w-full');
 
                                 $form->addHiddenValue('q', '/modules/'.$session->get('module').'/student_view_details.php');
                                 $form->addHiddenValue('gibbonPersonID', $gibbonPersonID);
@@ -1643,7 +1641,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                 $details = isset($_GET['details'])? $_GET['details'] : 'Yes';
                                 $form->addHiddenValue('details', 'No');
                                 $showHide = $form->getFactory()->createCheckbox('details')->addClass('details')->setValue('Yes')->checked($details)->inline(true)
-                                    ->description(__('Show/Hide Details'))->wrap('&nbsp;<span class="small emphasis displayInlineBlock">', '</span>');
+                                    ->description(__('Show/Hide Details'))->wrap('&nbsp;<span class="text-xs italic inline-block">', '</span>');
 
                                 $rowFilter = $form->addRow();
                                     $rowFilter->addSearchSubmit($session, __('Clear Filters'), array('gibbonPersonID', 'allStudents', 'search', 'subpage'))->prepend($showHide->getOutput());
@@ -2362,12 +2360,21 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                     ++$yearCount;
                                     try {
                                         $data = array('gibbonPersonID' => $gibbonPersonID, 'gibbonSchoolYearID' => $rowYears['gibbonSchoolYearID']);
-                                        $sql = "SELECT gibbonActivity.gibbonActivityID, gibbonActivity.name, gibbonActivity.type, gibbonActivity.programStart, gibbonActivity.programEnd, GROUP_CONCAT(gibbonSchoolYearTerm.nameShort ORDER BY gibbonSchoolYearTerm.sequenceNumber SEPARATOR ', ') as terms, gibbonActivityStudent.status, NULL AS role FROM gibbonActivity JOIN gibbonActivityStudent ON (gibbonActivity.gibbonActivityID=gibbonActivityStudent.gibbonActivityID) LEFT JOIN gibbonSchoolYearTerm ON (FIND_IN_SET(gibbonSchoolYearTerm.gibbonSchoolYearTermID, gibbonActivity.gibbonSchoolYearTermIDList)) WHERE gibbonActivityStudent.gibbonPersonID=:gibbonPersonID AND gibbonActivity.gibbonSchoolYearID=:gibbonSchoolYearID AND active='Y' AND gibbonActivityStudent.status <> 'Not Accepted' GROUP BY gibbonActivity.gibbonActivityID, gibbonActivityStudent.status ORDER BY gibbonActivityStudent.status, gibbonActivity.name";
+                                        $sql = "SELECT gibbonActivity.gibbonActivityID, gibbonActivity.name, gibbonActivity.type, gibbonActivity.programStart, gibbonActivity.programEnd, GROUP_CONCAT(gibbonSchoolYearTerm.nameShort ORDER BY gibbonSchoolYearTerm.sequenceNumber SEPARATOR ', ') as terms, gibbonActivityStudent.status, NULL AS role 
+                                        FROM gibbonActivity 
+                                        JOIN gibbonActivityStudent ON (gibbonActivity.gibbonActivityID=gibbonActivityStudent.gibbonActivityID) 
+                                        LEFT JOIN gibbonActivityCategory ON (gibbonActivityCategory.gibbonActivityCategoryID=gibbonActivity.gibbonActivityCategoryID) 
+                                        LEFT JOIN gibbonSchoolYearTerm ON (FIND_IN_SET(gibbonSchoolYearTerm.gibbonSchoolYearTermID, gibbonActivity.gibbonSchoolYearTermIDList)) 
+                                        WHERE gibbonActivityStudent.gibbonPersonID=:gibbonPersonID 
+                                        AND gibbonActivity.gibbonSchoolYearID=:gibbonSchoolYearID 
+                                        AND gibbonActivity.active='Y' 
+                                        AND gibbonActivityStudent.status <> 'Not Accepted' 
+                                        AND (gibbonActivityCategory.gibbonActivityCategoryID IS NULL OR CURRENT_TIMESTAMP >= gibbonActivityCategory.accessEnrolmentDate)
+                                        GROUP BY gibbonActivity.gibbonActivityID, gibbonActivityStudent.status ORDER BY gibbonActivityStudent.status, gibbonActivity.name";
                                         $result = $connection2->prepare($sql);
                                         $result->execute($data);
                                         $resultData = $result->fetchAll();
                                     } catch (PDOException $e) {
-                                        exit;
                                     }
 
                                     $table = DataTable::create('activities');
