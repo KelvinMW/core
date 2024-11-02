@@ -140,7 +140,7 @@ class Sidebar implements OutputableInterface, ContainerAwareInterface
                 $form->setFactory(DatabaseFormFactory::create($pdo));
                 $form->setTitle(__('Single Sign-on'));
                 $form->setClass('loginTableOAuth2');
-                $form->setAttribute('x-data', "{'options': false}");
+                $form->setAttribute('x-data', "{'submitting': false, 'options': false}");
 
                 $view = $this->getContainer()->get(View::class);
 
@@ -221,7 +221,7 @@ class Sidebar implements OutputableInterface, ContainerAwareInterface
                 $enablePublicRegistration = $this->settingGateway->getSettingByScope('User Admin', 'enablePublicRegistration');
 
                 $form = Form::createBlank('loginForm', $this->session->get('absoluteURL').'/login.php?'.http_build_query($_GET) )
-                    ->setAttribute('x-data', "{'options': false}");
+                    ->setAttribute('x-data', "{'submitting': false, 'options': false}");
 
                 $form->setFactory(DatabaseFormFactory::create($pdo));
                 $form->setAutocomplete(false);
@@ -393,7 +393,7 @@ class Sidebar implements OutputableInterface, ContainerAwareInterface
                             } elseif (count($unpinnedMessages) == 2) {
                                 $height = 197;
                             }
-                            echo "<table id='messageWallWidget' style='width: 100%; height: ".$height."px; border: 1px solid grey; padding: 6px; background-color: #eeeeee'>";
+                            echo "<table id='messageWallWidget' style='height: ".$height."px;' class='w-full border bg-gray-50 p-1'>";
                             //Content added by JS
                             $rand = rand(0, count($unpinnedMessages));
                             $total = count($unpinnedMessages);
