@@ -14,6 +14,7 @@ collapsed drop-down list in 'mini' view-mode.
 
 {% set sidebarClass = 'shadow bg-white rounded px-6 mb-6' %}
 
+{% if sidebar or menuModule %}
 <div class="mx-4 sm:mx-0 relative sm:static" x-data="{moduleMenu: false}" @keydown.escape.window="moduleMenu = false" @click.outside="moduleMenu = false" x-init="moduleMenu = false">
 
     {% if menuModule %}
@@ -38,13 +39,13 @@ collapsed drop-down list in 'mini' view-mode.
     {% if sidebar and sidebarContents is iterable %}
         {% for sidebarContent in sidebarContents %}
             {% if sidebarContent %}
-            <div class="{{ sidebarClass }} md:column-2 lg:column-1 {{ page.breadcrumbs ? 'pt-10 lg:pt-0' }} pb-6 lg:pb-8">
+            <div class="{{ sidebarClass }} md:column-2 lg:column-1 {{ page.breadcrumbs ? 'pt-4 lg:pt-0' }} pb-6 lg:pb-8">
                 {{ sidebarContent|raw }}
             </div>
             {% endif %}
         {% endfor %}
     {% elseif sidebar and sidebarContents %}
-        <div class="{{ sidebarClass }} md:column-2 lg:column-1 {{ page.breadcrumbs ? 'pt-10 lg:pt-0' }} pb-6 lg:pb-8">
+        <div class="{{ sidebarClass }} md:column-2 lg:column-1 {{ page.breadcrumbs ? 'pt-4 lg:pt-0' }} pb-6 lg:pb-8">
             {{ sidebarContents|raw }}
         </div>
     {% endif %}
@@ -88,3 +89,4 @@ collapsed drop-down list in 'mini' view-mode.
     {% endif %}
 </div>
 
+{% endif %}
