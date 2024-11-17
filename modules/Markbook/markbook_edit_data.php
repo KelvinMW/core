@@ -291,7 +291,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_edit_dat
                     $form = Form::create('markbookEditData', $session->get('absoluteURL').'/modules/'.$session->get('module').'/markbook_edit_dataProcess.php?gibbonCourseClassID='.$gibbonCourseClassID.'&gibbonMarkbookColumnID='.$gibbonMarkbookColumnID.'&address='.$session->get('address'));
                     $form->setFactory(DatabaseFormFactory::create($pdo));
                     $form->addHiddenValue('address', $session->get('address'));
-                    // $form->enableQuickSave();
+                    $form->enableQuickSave();
 
                     // Add header actions
                     if (!empty($values['gibbonPlannerEntryID'])) {
@@ -464,7 +464,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_edit_dat
 
                         $col = $row->onlyIf($hasAttainment)->addColumn();
                         $col->addSelectGradeScaleGrade($count.'-attainmentValue', $values['gibbonScaleIDAttainment'])
-                            ->setClass('textCenter gradeSelect inline-block')
+                            ->setClass('w-auto gradeSelect inline-block')
                             ->selected($student['attainmentValue']);
 
                         if ($hasAttainment && $hasAttainmentRubric) {
@@ -475,9 +475,9 @@ if (isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_edit_dat
                             $col->addContent($rubricLink->getOutput())->setClass('inline-block ml-1');
                         }
 
-                        $effort = $row->onlyIf($hasEffort)
-                            ->addSelectGradeScaleGrade($count.'-effortValue', $values['gibbonScaleIDEffort'])
-                            ->setClass('textCenter gradeSelect')
+                        $col = $row->onlyIf($hasAttainment)->addColumn();
+                        $effort = $col->addSelectGradeScaleGrade($count.'-effortValue', $values['gibbonScaleIDEffort'])
+                            ->setClass('w-auto gradeSelect inline-block')
                             ->selected($student['effortValue']);
 
                         if ($hasEffort && $hasEffortRubric) {
