@@ -177,7 +177,7 @@ require_once __DIR__ . '/src/MarkbookColumn.php';
     echo "<div class='linkTop flex justify-between items-center mt-4'>";
     
     // Print table header info
-    echo '<p class="pr-4 text-xs text-gray-600">';
+    echo '<p class="pr-4 text-xs text-gray-600 text-left">';
         if (!empty($teacherList)) {
             echo '<span class="text-sm font-semibold text-gray-800">'.sprintf(__('Class taught by %1$s'), implode(', ', $teacherList) ).'</span>.<br/>';
         }
@@ -395,7 +395,7 @@ require_once __DIR__ . '/src/MarkbookColumn.php';
             // Build a mini list for the hover-over info
             // TODO: Move this stuff into markbookColumn class
             $info = '<div class="font-bold text-sm leading-6 mb-2">'.$column->getData('description').'</div>';
-            $info .= '<ul class="m-0 w-48 text-xs">';
+            $info .= '<ul class="m-0 ml-4 w-48 text-xs">';
             $info .= '<li>'.__('Type').' - '.$markbook->getTypeDescription( $columnType ) .'</li>';
 
             $weightInfo = '';
